@@ -12,6 +12,8 @@
 
     function start(){
 
+        console.log("STARTING CODEOLOGY PROXY LRU CACHE");
+
         try {
 
             process.stdout.write('Started worker');
@@ -62,7 +64,7 @@
         });
     }
 
-start()
+start();
         //throng( start, {
         //    workers: WORKERS,
         //    lifetime: Infinity
