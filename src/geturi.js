@@ -21,10 +21,11 @@ module.exports = function (body) {
 
     console.log("======================================================");
     console.log( uri );
+    console.log( "EXPIRE TIME" , expire );
     console.log("======================================================");
 
     return new Promise(function (resolve, reject) {
-        console.log("inside promise")
+        console.log("inside promise");
 
         redis.exists( uri, function (err, exists) {
 
