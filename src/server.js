@@ -12,39 +12,30 @@
 
     function start(){
 
+        console.log("======================================================");
         console.log("STARTING CODEOLOGY PROXY LRU CACHE");
-
+        console.log("======================================================");
         try {
 
-            process.stdout.write('Started worker');
-
             process.on('SIGTERM', function() {
-                process.stdout.write('Worker exiting');
+                console.log('Worker exiting');
                 process.exit();
             });
 
             var app = express();
-
             app.use(bodyParser.urlencoded({ extended: false }));
             app.use(bodyParser.json());
 
-            //parse application/x-www-form-urlencoded
-            //app.use(bodyParser.urlencoded({ extended: false, limit: 2048 }));
-
-            // parse application/json
-
-            // var upload = multer({ dest: 'tmp/' });
-
-        //
             var server = app.listen( process.env.PORT, function () {
                 var host = server.address().address;
                 var port = server.address().port;
-
-                process.stdout.write( util.format( 'listening at http://%s:%s',host ,port ) );
+                console.log("======================================================");
+                console.log( util.format( 'listening at http://%s:%s',host ,port ) );
+                console.log("======================================================");
             });
 
         } catch( e ){
-            process.stderr.write("Error starting express app." + e );
+            console.log("Error starting express app." + e );
         }
 
         app.get("/", function( req, res ){
