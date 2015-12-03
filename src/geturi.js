@@ -24,20 +24,8 @@ module.exports = function (body) {
     var uri = body.uri;
     var expire = body.expire || 300;
 
-    console.log("======================================================");
-    console.log( uri );
-    console.log( "EXPIRE TIME" , expire );
-    console.log("======================================================");
-
     return new Promise(function (resolve, reject) {
-        console.log("inside promise");
-
         redis.exists( uri, function (err, exists) {
-
-
-            console.log( "uri is cached =", !!exists);
-            console.log("======================================================");
-
             if (exists) {
                 redis.get( uri, function (err, result) {
                     try {
@@ -62,7 +50,6 @@ module.exports = function (body) {
                     res.on('end', function () {
                         try {
                             data = data.toString();
-
 
                             redis.multi();
                             redis.set( uri, data );
