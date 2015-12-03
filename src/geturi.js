@@ -47,15 +47,17 @@ module.exports = function (body) {
                         try {
                             data = data.toString();
 
-                            try {
-                                resolve( JSON.parse( data ) );
-                            } catch (e) {
-                                reject(e);
-                            }
+
                             redis.multi();
                             redis.set( uri, data );
                             redis.expire( uri, expire);
-                            redis.exec();
+                            redis.exec( function(){
+                                try {
+                                    resolve( JSON.parse( data ) );
+                                } catch (e) {
+                                    reject(e);
+                                }
+                            });
 
                         } catch (e) {
                             reject(e);
