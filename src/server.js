@@ -49,6 +49,9 @@
         });
 
         app.post( "/", function( req, res ){
+            console.log("======================================================");
+            console.log("POSTING");
+            console.log("======================================================");
             geturi( req.body  ).then(function( json ){
                 res.json( json );
             });

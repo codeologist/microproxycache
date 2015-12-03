@@ -19,8 +19,16 @@ module.exports = function (body) {
     var uri = body.uri;
     var expire = body.expire || 300;
 
+    console.log("======================================================");
+    console.log( uri );
+    console.log("======================================================");
+
     return new Promise(function (resolve, reject) {
         redis.exists( uri, function (err, exists) {
+
+
+            console.log( "Is uri Cached", uri);
+            console.log("======================================================");
 
             if (exists) {
                 redis.get( uri, function (err, result) {
