@@ -27,7 +27,7 @@ module.exports = function (body) {
         redis.exists( uri, function (err, exists) {
 
 
-            console.log( "Is uri Cached", uri);
+            console.log( "uri is cached =", !!exists);
             console.log("======================================================");
 
             if (exists) {
