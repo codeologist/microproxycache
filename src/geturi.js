@@ -24,6 +24,8 @@ module.exports = function (body) {
     console.log("======================================================");
 
     return new Promise(function (resolve, reject) {
+        console.log("inside promise")
+
         redis.exists( uri, function (err, exists) {
 
 
