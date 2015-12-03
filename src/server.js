@@ -62,9 +62,9 @@
         });
     }
 
-
-        throng( start, {
-            workers: WORKERS,
-            lifetime: Infinity
-        });
+start()
+        //throng( start, {
+        //    workers: WORKERS,
+        //    lifetime: Infinity
+        //});
 
