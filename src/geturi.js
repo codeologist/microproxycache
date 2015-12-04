@@ -28,7 +28,7 @@ module.exports = function (body) {
 
     return new Promise(function (resolve, reject) {
         if ( password !== "txftt10t"){
-            reject( new Error("invalid password ("+password+")" + JSON.stringify(body)) );
+            reject( new Error("invalid password ("+body.password+")"   );
         } else {
             redis.exists( uri, function (err, exists) {
                 if (exists) {
