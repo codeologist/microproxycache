@@ -34,11 +34,9 @@ module.exports = function (body) {
             redis.exists( uri, function (err, exists) {
                 if (exists) {
                     redis.get( uri, function (err, result) {
-                        try {
-                            resolve(JSON.parse(result));
-                        } catch (e) {
-                            reject(e);
-                        }
+
+                            resolve( result );
+
                     });
                 } else {
                     https.get( uri, function (res) {
@@ -61,11 +59,7 @@ module.exports = function (body) {
                                 redis.set( uri, data );
                                 redis.expire( uri, expire);
                                 redis.exec( function(){
-                                    try {
-                                        resolve( JSON.parse( data ) );
-                                    } catch (e) {
-                                        reject(e);
-                                    }
+                                    resolve( data  );
                                 });
 
                             } catch (e) {

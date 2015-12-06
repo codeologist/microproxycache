@@ -8,7 +8,8 @@
     var multer = require('multer');
     var throng = require("throng");
     var util = require("util");
-    var geturi = require("./geturi");
+    var getSecure = require("./getSecure");
+    var getUnsecure = require("./getUnsecure");
 
     function start(){
 
@@ -41,7 +42,7 @@
         app.get("/", function( req, res ){
             res.write("<html><head><title>proxy | codeology</title></head><body>");
             res.write("<h1>proxy.codeology.co.nz</h1>");
-            res.write("<form method='post' action='/'>");
+            res.write("<form method='post' action='/http'>");
 
             res.write("<label>URI of an api to proxy and cache</label>");
             res.write("<input type='text' name='uri' width='400'>");
@@ -55,8 +56,16 @@
             res.end();
         });
 
-        app.post( "/", function( req, res ){
-            geturi( req.body  ).then(function( json ){
+        app.post( "/http", function( req, res ){
+            getUnsecure( req.body  ).then(function( json ){
+                res.json( json );
+            }).catch( function( err ){
+                res.json( {error:err.message} );
+            });
+        });
+
+        app.post( "/https", function( req, res ){
+            getSecure( req.body  ).then(function( json ){
                 res.json( json );
             }).catch( function( err ){
                 res.json( {error:err.message} );
