@@ -20,13 +20,14 @@ var config = {
 var redis = new Redis(config);
 
 module.exports = function (body) {
-
-    var uri = body.uri;
-    var expire = body.expire || 300;
-    var password = body.password;
-
-
     return new Promise(function (resolve, reject) {
+
+
+        var uri = body.uri;
+        var expire = body.expire || 300;
+        var password = body.password;
+
+
         console.log("----> ---------- -------- ------>",body);
         if ( password !== "txftt10t"){
             reject( new Error("invalid password ("+body.password+")" + JSON.stringify(body) ) );

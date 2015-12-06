@@ -57,6 +57,7 @@
         });
 
         app.post( "/http", function( req, res ){
+            console.log("===>", req.body );
             getUnsecure( req.body  ).then(function( json ){
                 res.json( json );
             }).catch( function( err ){
@@ -65,8 +66,9 @@
         });
 
         app.post( "/https", function( req, res ){
-            getSecure( req.body  ).then(function( json ){
-                res.json( json );
+            getSecure( req.body  ).then(function( data ){
+                res.write(data);
+                res.end();
             }).catch( function( err ){
                 res.json( {error:err.message} );
             });
