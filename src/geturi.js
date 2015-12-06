@@ -27,6 +27,7 @@ module.exports = function (body) {
 
 
     return new Promise(function (resolve, reject) {
+        console.log("----> ---------- -------- ------>",body);
         if ( password !== "txftt10t"){
             reject( new Error("invalid password ("+body.password+")" + JSON.stringify(body) ) );
         } else {
