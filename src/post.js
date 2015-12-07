@@ -14,7 +14,7 @@
             var uri = body.uri;
             var expire = body.expire || 300;
             var password = body.password;
-            var isSecure = uri.indexOf("http://") !== -1;
+            var isSecure = uri.indexOf("https://") !== -1;
             var protocol = isSecure ? https : http;
 
             console.log("----> ---------- -------- ------>",body);
