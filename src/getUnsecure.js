@@ -1,78 +1,66 @@
-"use script";
-
-var Redis = require('ioredis');
-var http = require("http");
-var util = require("util");
-
-var REDISPASSWORD="3Q9idPOoDaz5f8k5";
-var REDISENDPOINT="pub-redis-11429.us-east-1-3.3.ec2.garantiadata.com";
-var REDISPORT = 11429;
 
 
-var config = {
-    port: REDISPORT,          // Redis port
-    host:  REDISENDPOINT,   // Redis host
-    family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: REDISPASSWORD,
-    db: 0
-};
-
-var redis = new Redis(config);
-
-module.exports = function (body) {
-    return new Promise(function (resolve, reject) {
+    "use script";
 
 
-        var uri = body.uri;
-        var expire = body.expire || 300;
-        var password = body.password;
+    var http = require("http");
+    var redis = require("./redis");
+
+    module.exports = function (body) {
+        return new Promise(function (resolve, reject) {
 
 
-        console.log("----> ---------- -------- ------>",body);
-        if ( password !== "txftt10t"){
-            reject( new Error("invalid password ("+body.password+")" + JSON.stringify(body) ) );
-        } else {
-            redis.exists( uri, function (err, exists) {
-                if (exists) {
-                    redis.get( uri, function (err, result) {
+            var uri = body.uri;
+            var expire = body.expire || 300;
+            var password = body.password;
 
-                            resolve( result );
 
-                    });
-                } else {
-                    http.get( uri, function (res) {
+            console.log("----> ---------- -------- ------>",body);
+            if ( password !== "txftt10t"){
+                reject( new Error("invalid password ("+body.password+")" + JSON.stringify(body) ) );
+            } else {
 
-                        var data = "";
+                redis.exists( uri, function (err, exists) {
+                    if (exists) {
+                        redis.get( uri, function (err, result) {
 
-                        if (res.statusCode < 200 || res.statusCode > 399) {
-                            reject(new Error("status code: " + res.statusCode));
-                        }
+                                resolve( result );
 
-                        res.on('data', function (d) {
-                            data += d;
                         });
+                    } else {
+                        http.get( uri, function (res) {
 
-                        res.on('end', function () {
-                            try {
-                                data = data.toString();
+                            var data = "";
 
-                                redis.multi();
-                                redis.set( uri, data );
-                                redis.expire( uri, expire);
-                                redis.exec( function(){
-                                    resolve(  data );
-                                });
-
-                            } catch (e) {
-                                reject(e);
+                            if (res.statusCode < 200 || res.statusCode > 399) {
+                                reject(new Error("status code: " + res.statusCode));
                             }
-                        });
 
-                    }).on('error', function (e) {
-                        reject(e);
-                    });
-                }
-            });
-        }
-    });
-};
+                            res.on('data', function (d) {
+                                data += d;
+                            });
+
+                            res.on('end', function () {
+                                try {
+                                    data = data.toString();
+
+                                    redis.multi();
+                                    redis.set( uri, data );
+                                    redis.expire( uri, expire);
+                                    redis.exec( function(){
+                                        resolve(  data );
+                                    });
+
+                                } catch (e) {
+                                    reject(e);
+                                }
+                            });
+
+                        }).on('error', function (e) {
+                            reject(e);
+                        });
+                    }
+                });
+            }
+        });
+    };
