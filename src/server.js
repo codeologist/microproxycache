@@ -7,8 +7,7 @@
     var bodyParser = require('body-parser');
     var throng = require("throng");
     var util = require("util");
-    var getSecure = require("./getSecure");
-    var getUnsecure = require("./getUnsecure");
+    var post = require("./post");
 
 
     function start(){
@@ -41,22 +40,14 @@
 
         app.get("/", require( "./testpage" ) );
 
-        app.post( "/http", function( req, res ){
-            getUnsecure( req.body  ).then(function( json ){
+        app.post( "/", function( req, res ){
+            post( req.body  ).then(function( json ){
                 res.json( json );
             }).catch( function( err ){
                 res.json( {error:err.message} );
             });
         });
 
-        app.post( "/https", function( req, res ){
-            getSecure( req.body  ).then(function( data ){
-                res.write(data);
-                res.end();
-            }).catch( function( err ){
-                res.json( {error:err.message} );
-            });
-        });
     }
 
 

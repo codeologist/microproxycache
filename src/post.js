@@ -4,6 +4,7 @@
 
 
     var http = require("http");
+    var https = require("https");
     var redis = require("./redis");
 
     module.exports = function (body) {
@@ -13,7 +14,8 @@
             var uri = body.uri;
             var expire = body.expire || 300;
             var password = body.password;
-
+            var isSecure = uri.indexOf("http://") !== -1;
+            var protocol = isSecure ? https : http;
 
             console.log("----> ---------- -------- ------>",body);
             if ( password !== "txftt10t"){
@@ -28,7 +30,7 @@
 
                         });
                     } else {
-                        http.get( uri, function (res) {
+                        protocol.get( uri, function (res) {
 
                             var data = "";
 
